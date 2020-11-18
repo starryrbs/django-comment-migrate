@@ -9,13 +9,13 @@ os:
 language: python
 
 python:
-  - 3.5
-  - 3.6
-  - 3.7
-  - 3.8
+  - "2.7"
+  - "3.6"
+  - "3.7"
+  - "3.8"
 
 install:
-  - pip --disable-pip-version-check install --upgrade-strategy eager -U tox | cat
+  - pip install tox
 
 before_script:
   - psql -c 'create database test;' -U postgres
@@ -24,5 +24,3 @@ before_script:
 script:
   - tox
 
-after_success:
-  - coveralls
