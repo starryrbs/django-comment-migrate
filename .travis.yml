@@ -7,10 +7,18 @@ services:
 os:
   - linux
 language: python
+matrix:
+  include:
+    - python: 3.6
+      env: TOXENV=py36
+
+    - python: 3.6
+      env: TOXENV=py37
 
 python:
   - "3.6"
   - "3.7"
+
 
 install:
   - pip install tox
