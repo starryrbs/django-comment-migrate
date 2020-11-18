@@ -1,0 +1,2 @@
+include README.md
+recursive-include django_comment_migrate *.html *.png *.gif *js *.css *jpg *jpeg *svg *py
