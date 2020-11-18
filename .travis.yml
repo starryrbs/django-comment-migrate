@@ -1,0 +1,27 @@
+sudo: false
+dist: xenial
+
+services:
+  - postgresql
+  - mysql
+
+language: python
+
+python:
+  - 3.5
+  - 3.6
+  - 3.7
+  - 3.8
+
+install:
+  - pip install tox-travis coveralls
+
+before_script:
+  - psql -c 'create database test;' -U postgres
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS test;'
+
+script:
+  - tox
+
+after_success:
+  - coveralls
