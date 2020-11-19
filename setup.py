@@ -1,14 +1,20 @@
 from setuptools import setup
 
+readme = open('README.md').read()
+
 setup(
     name='django-comment-migrate',
-    version='0.0.1',
-    packages=['django_comment_migrate'],
-    url='',
-    license='',
+    version='0.0.2',
+    description="""An app that provides Django model comment migration""",
+    long_description=readme,
     author='starryrbs',
+    author_email='1322096624@qq.com',
+    url='https://github.com/starryrbs/django-comment-migrate.git',
+    keywords='django-comment-migrate',
+    packages=['django_comment_migrate'],
+    include_package_data=True,
+    zip_safe=False,
+    license='MIT',
     install_requires=['django>=2.2'],
     python_requires='>=3.5',
-    author_email='1322096624@qq.com',
-    description=''
 )
