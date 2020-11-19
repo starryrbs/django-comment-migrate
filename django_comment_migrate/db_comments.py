@@ -1,7 +1,6 @@
 import warnings
 
 from django.conf import settings
-from django.contrib.contenttypes.apps import ContentTypesConfig
 from django.db import DEFAULT_DB_ALIAS, router, connections
 from django.utils.module_loading import import_string
 
@@ -16,8 +15,7 @@ def get_migration_class_from_engine(engine):
     return import_string(path)
 
 
-def migrate_help_text_to_database(sender: ContentTypesConfig,
-                                  app_config,
+def migrate_help_text_to_database(app_config,
                                   using=DEFAULT_DB_ALIAS, **kwargs):
     engine = settings.DATABASES[using]['ENGINE']
 
