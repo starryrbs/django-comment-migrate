@@ -16,13 +16,13 @@ Django Comment Migrate
 例子
 ----
 
-1. 下载python包
+1. 下载python包::
 
-``shell script    pip install django-comment-migrate``
+    pip install django-comment-migrate
 
 2. 添加 django\_comment\_migrate app
 
-   project/project/settings.py
+   project/project/settings.py:
 
    .. code:: python
 
@@ -49,31 +49,31 @@ Django Comment Migrate
                app_label = 'tests'
                db_table = 'comment_model'
 
-4. 执行数据库迁移
+4. 执行数据库迁移::
 
-   ``shell script python manage.py makemigrations python manage.py migrate``
+    python manage.py makemigrations python manage.py migrate
 
 现在检查数据库的table，注释已经迁移了。
 
 Command
 -------
 
-这里提供了一个命令，可以重新生成指定app的注释
+这里提供了一个命令，可以重新生成指定app的注释::
 
-``shell script python manage.py migratecomment [app_label]``
+    python manage.py migratecomment [app_label]
 
-    这条命令需要在执行所有迁移文件后执行
+这条命令需要在执行所有迁移文件后执行
 
 运行测试
 --------
 
-1. Install Tox
+1. Install Tox::
 
-   ``shell script pip install tox``
+    pip install tox
 
-2. Run
+2. Run::
 
-   ``shell script tox``
+    tox
 
 支持的数据库
 ------------
