@@ -34,20 +34,33 @@ class TestDjangoCommentMigration(TestCase):
     def test_get_comments_for_model(self):
         engine = settings.DATABASES['default']['ENGINE']
         migration_class = get_migration_class_from_engine(engine)
-        postgres_comment_sql = "COMMENT ON COLUMN comment_model.aaa " \
-                               "IS 'test default';" \
-                               "COMMENT ON COLUMN comment_model.help_text " \
-                               "IS 'this is help text'"
+        from psycopg2 import sql
+        postgres_comments_sql = [
+            (
+                sql.SQL("COMMENT ON COLUMN {}.{} IS %s").format(
+                    sql.Identifier('user'),
+                    sql.Identifier('aaa')
+                ),
+                ['test default']
+            ),
+            (
+                sql.SQL("COMMENT ON COLUMN {}.{} IS %s").format(
+                    sql.Identifier('user'),
+                    sql.Identifier('email')
+                ),
+                ['this is help text']
+            )
+        ]
         engine_sql_mapping = {
-            'django.db.backends.mysql': "ALTER TABLE comment_model "
-                                        "MODIFY COLUMN `aaa` integer "
-                                        "NOT NULL "
-                                        "COMMENT 'test default',"
-                                        "MODIFY COLUMN `help_text` "
-                                        "varchar(40) NOT NULL "
-                                        "COMMENT 'this is help text'",
-            "django.db.backends.postgresql_psycopg2": postgres_comment_sql,
-            "django.db.backends.postgresql": postgres_comment_sql,
+            'django.db.backends.mysql': [("ALTER TABLE user "
+                                          "MODIFY COLUMN `aaa` integer "
+                                          "NOT NULL "
+                                          "COMMENT 'test default',"
+                                          "MODIFY COLUMN `email` "
+                                          "varchar(40) NOT NULL "
+                                          "COMMENT 'this is help text'", [])],
+            "django.db.backends.postgresql_psycopg2": postgres_comments_sql,
+            "django.db.backends.postgresql": postgres_comments_sql,
         }
 
         sql = migration_class(model=CommentModel, connection=connections[
