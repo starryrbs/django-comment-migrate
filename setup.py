@@ -4,7 +4,7 @@ readme = open('README.rst').read()
 
 setup(
     name='django-comment-migrate',
-    version='0.0.2',
+    version='0.0.3',
     description="""An app that provides Django model comment migration""",
     long_description=readme,
     author='starryrbs',
