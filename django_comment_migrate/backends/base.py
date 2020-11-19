@@ -1,5 +1,5 @@
 from abc import ABCMeta
-from typing import Type
+from typing import Type, List, AnyStr, Tuple
 
 from django.db.models import Model
 
@@ -12,7 +12,7 @@ class BaseCommentMigration(metaclass=ABCMeta):
         if self.collect_sql:
             self.collected_sql = []
 
-    def comments_sql(self) -> str:
+    def comments_sql(self) -> List[Tuple[AnyStr, List[AnyStr]]]:
         pass
 
     def migrate_comments_to_database(self):
@@ -22,7 +22,9 @@ class BaseCommentMigration(metaclass=ABCMeta):
         return self.connection.ops.quote_name(name)
 
     def execute(self):
-        sql = self.comments_sql()
-        if sql:
+        comments_sql = self.comments_sql()
+        if comments_sql:
+
             with self.connection.cursor() as cursor:
-                cursor.execute(sql)
+                for comment_sql, params in comments_sql:
+                    cursor.execute(comment_sql, params)
