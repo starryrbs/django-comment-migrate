@@ -9,7 +9,7 @@ class CommentMigration(BaseCommentMigration):
     sql_alter_column_comment_not_null = "MODIFY COLUMN %(column)s %(type)s " \
                                         "NOT NULL COMMENT %(comment)s"
 
-    def comments_sql(self) -> str:
+    def comments_sql(self):
         db_table = self.model._meta.db_table
         changes = []
         for field in self.model._meta.fields:
@@ -24,7 +24,12 @@ class CommentMigration(BaseCommentMigration):
                     "comment": "'%s'" % comment
                 })
         if changes:
-            return self.sql_alter_column % {
-                "table": db_table,
-                "changes": ",".join(changes)
-            }
+            return [
+                (
+                    self.sql_alter_column % {
+                        "table": db_table,
+                        "changes": ",".join(changes)
+                    },
+                    []
+                )
+            ]
