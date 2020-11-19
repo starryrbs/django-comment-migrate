@@ -3,25 +3,24 @@
 ![Build](https://travis-ci.org/starryrbs/django-comment-migrate.svg?branch=master) 
 ![https://pypi.org/project/django-comment-migrate/](https://img.shields.io/pypi/v/django-comment-migrate)
 
-An app that provides Django model comment migration
+这是一个Django model注释迁移的app
 
-English | [简体中文](./README-zh_CN.md) 
+[English](./README.md) | 简体中文
 
-## Feature
+## 特性
 
-- Automatic migration model help_text to comment
-- Provide a command to migrate the comment of the specified app
+- 自动化迁移model的字段的help_text到注释
+- 提供一个命令去迁移指定的app的注释
 
+## 例子
 
-## Examples
+1. 下载python包
 
-1. download python package
+   ```shell script
+   pip install django-comment-migrate
+   ```
 
-    ```shell script
-    pip install django-comment-migrate
-    ```
-
-2. add django_comment_migrate app
+2. 添加 django_comment_migrate app
 
     project/project/settings.py
     
@@ -32,7 +31,7 @@ English | [简体中文](./README-zh_CN.md)
     ]
     ```
 
-3. add model 
+3. 添加 model 
 
     project/app/model.py
     
@@ -50,28 +49,27 @@ English | [简体中文](./README-zh_CN.md)
             db_table = 'comment_model'
     ```
 
-4. execute database migrate
+4. 执行数据库迁移
 
     ```shell script
     python manage.py makemigrations
     python manage.py migrate
     ```
 
-Now check the database table, comments have been generated.
+现在检查数据库的table，注释已经迁移了。
 
 ## Command
 
-Provides a comment migration command, 
-which allows the database to regenerate comments
+这里提供了一个命令，可以重新生成指定app的注释
 
 ```shell script
-python manage.py migratecomment
+python manage.py migratecomment [app_label]
 ```
 
-> The command needs to be executed after all migrations are executed
+> 这条命令需要在执行所有迁移文件后执行
 
 
-## Running the tests
+## 运行测试
 
 1. Install Tox
 
@@ -85,7 +83,7 @@ python manage.py migratecomment
     tox
     ```
 
-## Supported Database
+## 支持的数据库
 
 - MySQL
 - Postgres
