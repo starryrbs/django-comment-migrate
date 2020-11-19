@@ -1,6 +1,3 @@
-import psycopg2
-from psycopg2 import sql
-
 from django_comment_migrate.backends.base import BaseCommentMigration
 from django_comment_migrate.utils import get_field_comment
 
