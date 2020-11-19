@@ -1,6 +1,6 @@
 from setuptools import setup
 
-readme = open('README.md').read()
+readme = open('README.rst').read()
 
 setup(
     name='django-comment-migrate',
