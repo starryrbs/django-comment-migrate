@@ -16,9 +16,9 @@ Feature
 Examples
 --------
 
-1. download python package
+1. download python package::
 
-   ``shell script pip install django-comment-migrate``
+    pip install django-comment-migrate
 
 2. add django\_comment\_migrate app
 
@@ -49,9 +49,9 @@ Examples
                app_label = 'tests'
                db_table = 'comment_model'
 
-4. execute database migrate
+4. execute database migrate::
 
-   ``shell script python manage.py makemigrations python manage.py migrate``
+    python manage.py makemigrations python manage.py migrate
 
 Now check the database table, comments have been generated.
 
@@ -59,22 +59,22 @@ Command
 -------
 
 Provides a comment migration command, which allows the database to
-regenerate comments
+regenerate comments::
 
-``shell script python manage.py migratecomment``
+    python manage.py migratecomment
 
-    The command needs to be executed after all migrations are executed
+The command needs to be executed after all migrations are executed
 
 Running the tests
 -----------------
 
-1. Install Tox
+1. Install Tox::
 
-   ``shell script pip install tox``
+    pip install tox
 
-2. Run
+2. Run::
 
-   ``shell script tox``
+    tox
 
 Supported Database
 ------------------
