@@ -18,7 +18,7 @@ Examples
 
 1. download python package::
 
-   pip install django-comment-migrate
+    pip install django-comment-migrate
 
 2. add django\_comment\_migrate app
 
@@ -51,7 +51,7 @@ Examples
 
 4. execute database migrate::
 
-   python manage.py makemigrations python manage.py migrate
+    python manage.py makemigrations python manage.py migrate
 
 Now check the database table, comments have been generated.
 
@@ -70,11 +70,11 @@ Running the tests
 
 1. Install Tox::
 
-   pip install tox
+    pip install tox
 
 2. Run::
 
-   tox
+    tox
 
 Supported Database
 ------------------

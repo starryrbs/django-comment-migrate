@@ -51,7 +51,7 @@ Django Comment Migrate
 
 4. 执行数据库迁移::
 
-   python manage.py makemigrations python manage.py migrate
+    python manage.py makemigrations python manage.py migrate
 
 现在检查数据库的table，注释已经迁移了。
 
@@ -69,11 +69,11 @@ Command
 
 1. Install Tox::
 
-   pip install tox
+    pip install tox
 
 2. Run::
 
-   tox
+    tox
 
 支持的数据库
 ------------
