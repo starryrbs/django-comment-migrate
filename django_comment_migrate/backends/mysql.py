@@ -12,6 +12,7 @@ class CommentMigration(BaseCommentMigration):
     def comments_sql(self):
         db_table = self.model._meta.db_table
         changes = []
+        params = []
         for field in self.model._meta.fields:
             comment = get_field_comment(field)
             if comment:
@@ -21,8 +22,9 @@ class CommentMigration(BaseCommentMigration):
                 changes.append(sql % {
                     "column": self.quote_name(field.column),
                     "type": db_parameters['type'],
-                    "comment": "'%s'" % comment
+                    "comment": "%s"
                 })
+                params.append(comment)
         if changes:
             return [
                 (
@@ -30,6 +32,6 @@ class CommentMigration(BaseCommentMigration):
                         "table": db_table,
                         "changes": ",".join(changes)
                     },
-                    []
+                    params
                 )
             ]
