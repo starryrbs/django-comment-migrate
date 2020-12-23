@@ -49,16 +49,27 @@ class TestDjangoCommentMigration(TestCase):
                     sql.Identifier('email')
                 ),
                 ['this is help text']
+            ),
+            (
+                sql.SQL("COMMENT ON COLUMN {}.{} IS %s").format(
+                    sql.Identifier('user'),
+                    sql.Identifier('json_help_text')
+                ),
+                ['{\'A\', \'B\'}']
             )
         ]
         engine_sql_mapping = {
             'django.db.backends.mysql': [("ALTER TABLE user "
                                           "MODIFY COLUMN `aaa` integer "
                                           "NOT NULL "
-                                          "COMMENT 'test default',"
+                                          "COMMENT %s,"
                                           "MODIFY COLUMN `email` "
                                           "varchar(40) NOT NULL "
-                                          "COMMENT 'this is help text'", [])],
+                                          "COMMENT %s,"
+                                          "MODIFY COLUMN `json_help_text` "
+                                          "varchar(40) NOT NULL "
+                                          "COMMENT %s",
+                                          ['test default', 'this is help text', '{\'A\', \'B\'}'])],
             "django.db.backends.postgresql_psycopg2": postgres_comments_sql,
             "django.db.backends.postgresql": postgres_comments_sql,
         }
