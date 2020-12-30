@@ -51,7 +51,8 @@ Examples
 
 4. execute database migrate::
 
-    python manage.py makemigrations python manage.py migrate
+    python manage.py makemigrations
+    python manage.py migrate
 
 Now check the database table, comments have been generated.
 
@@ -61,7 +62,7 @@ Command
 Provides a comment migration command, which allows the database to
 regenerate comments::
 
-    python manage.py migratecomment
+    python manage.py migratecomment  [app_label]
 
 The command needs to be executed after all migrations are executed
 
