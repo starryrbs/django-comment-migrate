@@ -15,15 +15,15 @@ class Command(BaseCommand):
                  ' Defaults to the "default" database.',
         )
         parser.add_argument(
-            '--app_label', nargs='*',
+            'app_label', nargs='?',
             help='App labels of applications to limit the migrate comment'
         )
 
     def handle(self, *args, **options):
         using = options['database']
-        app_names = options['app_label']
-        if app_names:
-            app_configs = self.filter_valid_app_configs(app_names)
+        app_label = options['app_label']
+        if app_label:
+            app_configs = self.filter_valid_app_configs([app_label])
         else:
             app_configs = self.load_app_configs(using)
 
@@ -48,7 +48,7 @@ class Command(BaseCommand):
         migrated_apps = set()
         for app_name in app_names:
             try:
-                migrated_apps.add(apps.get_app_configs(app_name))
+                migrated_apps.add(apps.get_app_config(app_name))
             except LookupError as error:
                 self.stderr.write(error)
                 has_bad_names = True

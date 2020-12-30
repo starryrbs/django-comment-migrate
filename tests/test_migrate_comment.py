@@ -1,4 +1,7 @@
+import io
+
 from django.conf import settings
+from django.core import management
 from django.test import TestCase
 from django.db import connections
 from django.utils.module_loading import import_string
@@ -78,3 +81,15 @@ class TestDjangoCommentMigration(TestCase):
             'default']).comments_sql()
         target_sql = engine_sql_mapping[engine]
         self.assertEqual(sql, target_sql)
+
+
+class TestCommand(TestCase):
+    def test_migrate_command_with_app_label(self):
+        out = io.StringIO()
+        management.call_command('migratecomment', app_label='tests', stdout=out)
+        self.assertEqual(out.getvalue(), 'migrate app tests successful\n')
+
+    def test_migrate_command_without_app_label(self):
+        out = io.StringIO()
+        management.call_command('migratecomment', stdout=out)
+        self.assertIn('migrate app tests successful\n', out.getvalue())
