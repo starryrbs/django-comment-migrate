@@ -29,6 +29,7 @@ class BaseCommentMigration(metaclass=ABCMeta):
             with transaction.atomic():
                 self.execute_sql()
         else:
+            self.connection.needs_rollback = False
             self.execute_sql()
 
     def execute_sql(self):
