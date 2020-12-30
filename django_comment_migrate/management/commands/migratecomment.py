@@ -2,7 +2,7 @@ import sys
 
 from django.apps import apps
 from django.core.management import BaseCommand
-from django.db import DEFAULT_DB_ALIAS, router, transaction
+from django.db import DEFAULT_DB_ALIAS, router
 
 from django_comment_migrate.db_comments import migrate_help_text_to_database
 
@@ -28,8 +28,7 @@ class Command(BaseCommand):
             app_configs = self.load_app_configs(using)
 
         for app_config in app_configs:
-            with transaction.atomic():
-                migrate_help_text_to_database(app_config)
+            migrate_help_text_to_database(app_config)
             self.stdout.write(self.style.SUCCESS(
                 f"migrate app {app_config.label} successful"))
 

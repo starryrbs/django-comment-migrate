@@ -3,6 +3,7 @@ from django_comment_migrate.utils import get_field_comment
 
 
 class CommentMigration(BaseCommentMigration):
+    atomic = False
     sql_alter_column = "ALTER TABLE %(table)s %(changes)s"
     sql_alter_column_comment_null = "MODIFY COLUMN %(column)s %(type)s NULL" \
                                     " COMMENT %(comment)s"
