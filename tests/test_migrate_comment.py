@@ -87,9 +87,9 @@ class TestCommand(TestCase):
     def test_migrate_command_with_app_label(self):
         out = io.StringIO()
         management.call_command('migratecomment', app_label='tests', stdout=out)
-        self.assertIn('migrate app tests successful\n', out.getvalue(), )
+        self.assertIn('migrate app tests successful', out.getvalue(), )
 
     def test_migrate_command_without_app_label(self):
         out = io.StringIO()
         management.call_command('migratecomment', stdout=out)
-        self.assertIn('migrate app tests successful\n', out.getvalue())
+        self.assertIn('migrate app tests successful', out.getvalue())
