@@ -13,8 +13,8 @@ SECRET_KEY = "k7n0r44#%6oyhawmz$o&mug!y3@25%u&+rg+4^iu0_tekg4jv3"
 
 test_db_engine = os.environ.get('TEST_DB_ENGINE', 'postgres')
 
-if test_db_engine == 'mysql':
-    DATABASES = {
+test_db_engine_to_databases_mapping = {
+    'mysql': {
         "default": {
             "ENGINE": "django.db.backends.mysql",
             "NAME": "test",
@@ -24,10 +24,8 @@ if test_db_engine == 'mysql':
                 'charset': 'utf8mb4',
             }
         }
-    }
-
-if test_db_engine == 'postgres':
-    DATABASES = {
+    },
+    'postgres': {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             "NAME": "test",
@@ -37,6 +35,9 @@ if test_db_engine == 'postgres':
             'PORT': 5432,
         },
     }
+}
+
+DATABASES = test_db_engine_to_databases_mapping[test_db_engine]
 
 ROOT_URLCONF = "tests.urls"
 
