@@ -18,7 +18,6 @@ setup(
     install_requires=['django>=2.2'],
     python_requires='>=3.5',
     classifiers=[
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
