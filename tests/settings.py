@@ -49,8 +49,6 @@ INSTALLED_APPS = [
     "tests"
 ]
 
-SITE_ID = 1
-
 if django.VERSION >= (1, 10):
     MIDDLEWARE = ()
 else:
