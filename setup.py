@@ -4,7 +4,7 @@ readme = open('README.rst', encoding='utf-8').read()
 
 setup(
     name='django-comment-migrate',
-    version='0.0.8',
+    version='0.0.9',
     description="""An app that provides Django model comment migration""",
     long_description=readme,
     author='starryrbs',
@@ -16,7 +16,7 @@ setup(
     zip_safe=False,
     license='MIT',
     install_requires=['django>=2.2'],
-    python_requires='>=3.5',
+    python_requires='>=3.6',
     classifiers=[
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
