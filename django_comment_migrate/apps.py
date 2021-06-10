@@ -7,7 +7,7 @@ from django_comment_migrate.utils import get_migrations_app_models
 
 
 def handle_post_migrate(app_config, using=DEFAULT_DB_ALIAS, **kwargs):
-    migrations = (migration for migration, _ in kwargs.get('plan', []))
+    migrations = (migration for migration, rollback in kwargs.get('plan', []) if not rollback)
     app_models = get_migrations_app_models(migrations, apps, using)
     migrate_app_models_help_text_to_database(app_models, using)
 
