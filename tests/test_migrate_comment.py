@@ -3,7 +3,7 @@ import io
 from django.apps.registry import Apps
 from django.conf import settings
 from django.core import management
-from django.test import TestCase
+from django.test import TransactionTestCase, TestCase
 from django.db import connections, migrations, models
 from django.utils.module_loading import import_string
 
@@ -95,6 +95,20 @@ class TestCommand(TestCase):
         out = io.StringIO()
         management.call_command('migratecomment', stdout=out)
         self.assertIn('migrate app tests successful', out.getvalue())
+
+
+class TestCommandWithAnotherCustomUser(TransactionTestCase):
+    def test_migrate_command_with_custom_auth_user(self):
+        # rollback migrations auth and related
+        management.call_command('migrate', app_label='contenttypes', migration_name='zero')
+        management.call_command('migrate', app_label='auth', migration_name='zero')
+        with self.settings(AUTH_USER_MODEL="tests.AnotherUserModel"):
+            out = io.StringIO()
+            # migrate auth and related again in customize auth_user_model context
+            management.call_command('migrate', app_label='auth')
+            management.call_command('migrate', app_label='contenttypes')
+            management.call_command('migratecomment', stdout=out)
+            self.assertIn('migrate app tests successful', out.getvalue())
 
 
 class TestUtil(TestCase):

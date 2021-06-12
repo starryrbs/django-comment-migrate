@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import models as auth_models
 
 
 class CommentModel(models.Model):
@@ -10,3 +11,8 @@ class CommentModel(models.Model):
     class Meta:
         app_label = 'tests'
         db_table = 'user'
+
+
+class AnotherUserModel(auth_models.AbstractBaseUser):
+    class Meta:
+        app_label = 'tests'
