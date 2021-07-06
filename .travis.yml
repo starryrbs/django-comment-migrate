@@ -17,6 +17,7 @@ python:
 sudo: required
 
 before_install:
+  - sudo apt install unixodbc-dev
   # 启动sqlserver docker容器
   - docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=django321!' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-latest
 
