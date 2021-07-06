@@ -14,10 +14,18 @@ python:
   - "3.7"
   - "3.8"
 
-sudo: required
+addons:
+  apt:
+    packages:
+      - unixodbc
+      - unixodbc-dev
 
 before_install:
-  - sudo apt install unixodbc-dev
+  # install MSSQL driver
+  - sudo bash -c 'curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -'
+  - sudo bash -c 'curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt/sources.list.d/mssql-release.list'
+  - sudo apt-get update
+  - sudo ACCEPT_EULA=Y apt-get install msodbcsql17
   # 启动sqlserver docker容器
   - docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=django321!' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-latest
 
