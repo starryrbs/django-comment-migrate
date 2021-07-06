@@ -15,15 +15,12 @@ from tests.models import CommentModel
 class TestDjangoCommentMigration(TestCase):
     def test_get_migration_class_from_engine(self):
         engine_migration_class_mapping = {
-            'django.db.backends.mysql':
-                'django_comment_migrate.backends.mysql.CommentMigration',
-            'django.db.backends.postgresql':
-                'django_comment_migrate.backends.postgresql.CommentMigration',
-            'django.db.backends.postgresql_psycopg2':
-                'django_comment_migrate.backends.postgresql.CommentMigration',
-            'django.db.backends.sqlserver': None
+            "django.db.backends.mysql": "django_comment_migrate.backends.mysql.CommentMigration",
+            "django.db.backends.postgresql": "django_comment_migrate.backends.postgresql.CommentMigration",
+            "django.db.backends.postgresql_psycopg2": "django_comment_migrate.backends.postgresql.CommentMigration",
+            "mssql": "django_comment_migrate.backends.mssql.CommentMigration",
         }
-        engine = settings.DATABASES['default']['ENGINE']
+        engine = settings.DATABASES["default"]["ENGINE"]
         try:
             target_migration_class = get_migration_class_from_engine(engine)
         except ImportError:
@@ -37,50 +34,74 @@ class TestDjangoCommentMigration(TestCase):
         self.assertEqual(migration_class, target_migration_class)
 
     def test_get_comments_for_model(self):
-        engine = settings.DATABASES['default']['ENGINE']
+        engine = settings.DATABASES["default"]["ENGINE"]
         migration_class = get_migration_class_from_engine(engine)
         from psycopg2 import sql
+
         postgres_comments_sql = [
             (
                 sql.SQL("COMMENT ON COLUMN {}.{} IS %s").format(
-                    sql.Identifier('user'),
-                    sql.Identifier('aaa')
+                    sql.Identifier("user"), sql.Identifier("aaa")
                 ),
-                ['test default']
+                ["test default"],
             ),
             (
                 sql.SQL("COMMENT ON COLUMN {}.{} IS %s").format(
-                    sql.Identifier('user'),
-                    sql.Identifier('email')
+                    sql.Identifier("user"), sql.Identifier("email")
                 ),
-                ['this is help text']
+                ["this is help text"],
             ),
             (
                 sql.SQL("COMMENT ON COLUMN {}.{} IS %s").format(
-                    sql.Identifier('user'),
-                    sql.Identifier('json_help_text')
+                    sql.Identifier("user"), sql.Identifier("json_help_text")
                 ),
-                ['{\'A\', \'B\'}']
-            )
+                ["{'A', 'B'}"],
+            ),
+        ]
+        mssql_sql = [
+            (
+                "EXEC sys.sp_addextendedproperty @name = N'MS_Description',"
+                "@value = %s, @level0type = N'SCHEMA',@level0name = N'dbo', "
+                "@level1type = N'TABLE',@level1name = %s, @level2type = N'COLUMN',@level2name = %s",
+                ("test default", "user", "aaa"),
+            ),
+            (
+                "EXEC sys.sp_addextendedproperty @name = N'MS_Description',"
+                "@value = %s, @level0type = N'SCHEMA',@level0name = N'dbo', "
+                "@level1type = N'TABLE',@level1name = %s, @level2type = N'COLUMN',@level2name = %s",
+                ("this is help text", "user", "email"),
+            ),
+            (
+                "EXEC sys.sp_addextendedproperty @name = N'MS_Description',"
+                "@value = %s, @level0type = N'SCHEMA',@level0name = N'dbo', "
+                "@level1type = N'TABLE',@level1name = %s, @level2type = N'COLUMN',@level2name = %s",
+                ("{'A', 'B'}", "user", "json_help_text"),
+            ),
         ]
         engine_sql_mapping = {
-            'django.db.backends.mysql': [("ALTER TABLE user "
-                                          "MODIFY COLUMN `aaa` integer "
-                                          "NOT NULL "
-                                          "COMMENT %s,"
-                                          "MODIFY COLUMN `email` "
-                                          "varchar(40) NOT NULL "
-                                          "COMMENT %s,"
-                                          "MODIFY COLUMN `json_help_text` "
-                                          "varchar(40) NOT NULL "
-                                          "COMMENT %s",
-                                          ['test default', 'this is help text', '{\'A\', \'B\'}'])],
+            "django.db.backends.mysql": [
+                (
+                    "ALTER TABLE user "
+                    "MODIFY COLUMN `aaa` integer "
+                    "NOT NULL "
+                    "COMMENT %s,"
+                    "MODIFY COLUMN `email` "
+                    "varchar(40) NOT NULL "
+                    "COMMENT %s,"
+                    "MODIFY COLUMN `json_help_text` "
+                    "varchar(40) NOT NULL "
+                    "COMMENT %s",
+                    ["test default", "this is help text", "{'A', 'B'}"],
+                )
+            ],
             "django.db.backends.postgresql_psycopg2": postgres_comments_sql,
             "django.db.backends.postgresql": postgres_comments_sql,
+            "mssql": mssql_sql,
         }
 
-        sql = migration_class(model=CommentModel, connection=connections[
-            'default']).comments_sql()
+        sql = migration_class(
+            model=CommentModel, connection=connections["default"]
+        ).comments_sql()
         target_sql = engine_sql_mapping[engine]
         self.assertEqual(sql, target_sql)
 
@@ -88,32 +109,37 @@ class TestDjangoCommentMigration(TestCase):
 class TestCommand(TestCase):
     def test_migrate_command_with_app_label(self):
         out = io.StringIO()
-        management.call_command('migratecomment', app_label='tests', stdout=out)
-        self.assertIn('migrate app tests successful', out.getvalue(), )
+        management.call_command("migratecomment", app_label="tests", stdout=out)
+        self.assertIn(
+            "migrate app tests successful",
+            out.getvalue(),
+        )
 
     def test_migrate_command_without_app_label(self):
         out = io.StringIO()
-        management.call_command('migratecomment', stdout=out)
-        self.assertIn('migrate app tests successful', out.getvalue())
+        management.call_command("migratecomment", stdout=out)
+        self.assertIn("migrate app tests successful", out.getvalue())
 
 
 class TestCommandWithAnotherCustomUser(TransactionTestCase):
     def test_migrate_command_with_custom_auth_user(self):
         # rollback migrations auth and related
-        management.call_command('migrate', app_label='contenttypes', migration_name='zero')
-        management.call_command('migrate', app_label='auth', migration_name='zero')
+        management.call_command(
+            "migrate", app_label="contenttypes", migration_name="zero"
+        )
+        management.call_command("migrate", app_label="auth", migration_name="zero")
         with self.settings(AUTH_USER_MODEL="tests.AnotherUserModel"):
             out = io.StringIO()
             # migrate auth and related again in customize auth_user_model context
-            management.call_command('migrate', app_label='auth')
-            management.call_command('migrate', app_label='contenttypes')
-            management.call_command('migratecomment', stdout=out)
-            self.assertIn('migrate app tests successful', out.getvalue())
+            management.call_command("migrate", app_label="auth")
+            management.call_command("migrate", app_label="contenttypes")
+            management.call_command("migratecomment", stdout=out)
+            self.assertIn("migrate app tests successful", out.getvalue())
 
 
 class TestUtil(TestCase):
     def test_get_migrations_app_models(self):
-        new_apps = Apps(['tests'])
+        new_apps = Apps(["tests"])
 
         # 添加用于测试的models
         class Author(models.Model):
@@ -138,30 +164,28 @@ class TestUtil(TestCase):
         class FieldMigration(migrations.Migration):
             operations = [
                 migrations.AddField(
-                    model_name='book',
-                    name='new_field',
-                    field=models.CharField(max_length=10)
-
+                    model_name="book",
+                    name="new_field",
+                    field=models.CharField(max_length=10),
                 )
             ]
 
         class ModelMigration(migrations.Migration):
-            operations = [migrations.CreateModel(
-                name='Author',
-                fields=[]
-            )]
+            operations = [migrations.CreateModel(name="Author", fields=[])]
 
         class MigrationWithNoOperation(migrations.Migration):
             pass
 
         test_migrations = [
-            FieldMigration('test_migration_00', 'tests'),
-            MigrationWithNoOperation('test_migration_01', 'tests'),
-            ModelMigration('test_migration_02', 'tests'),
+            FieldMigration("test_migration_00", "tests"),
+            MigrationWithNoOperation("test_migration_01", "tests"),
+            ModelMigration("test_migration_02", "tests"),
             migrations.RunPython(lambda x: x),
-            migrations.AddIndex('author', models.Index(name='aa', fields=['id']))
+            migrations.AddIndex("author", models.Index(name="aa", fields=["id"])),
         ]
 
         app_models = get_migrations_app_models(test_migrations, new_apps)
-        self.assertSequenceEqual(sorted(list(app_models), key=lambda x: str(x)),
-                                 sorted([Book, Author], key=lambda x: str(x)))
+        self.assertSequenceEqual(
+            sorted(list(app_models), key=lambda x: str(x)),
+            sorted([Book, Author], key=lambda x: str(x)),
+        )

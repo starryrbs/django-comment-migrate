@@ -4,6 +4,7 @@ dist: xenial
 services:
   - postgresql
   - mysql
+  - docker
 os:
   - linux
 language: python
@@ -13,6 +14,8 @@ python:
   - "3.7"
   - "3.8"
 
+before_install:
+  - docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=django321!' -p 1433:1433 -d mcr.microsoft.com/mssql/server:2017-latest
 
 install:
   - pip install tox-travis coveralls
