@@ -81,6 +81,7 @@ Command
 
 -  MySQL
 -  Postgres
+-  Microsoft SQL Server
 
 .. |Build| image:: https://travis-ci.org/starryrbs/django-comment-migrate.svg?branch=master
 .. |https://pypi.org/project/django-comment-migrate/| image:: https://img.shields.io/pypi/v/django-comment-migrate
