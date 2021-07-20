@@ -8,14 +8,14 @@ def get_field_comment(field: Field):
         return str(field.help_text)
 
 
-def get_migrations_app_models(migrations: [Migration], apps, using=DEFAULT_DB_ALIAS):
+def get_migrations_app_models(migrations: [Migration], apps, using=DEFAULT_DB_ALIAS) -> set:
     models = set()
     for migration in migrations:
         if not isinstance(migration, Migration):
             continue
         app_label = migration.app_label
         if not router.allow_migrate(using, app_label):
-            return
+            continue
         operations = getattr(migration, 'operations', [])
         for operation in operations:
             model_name = getattr(operation, 'model_name', None) or getattr(operation, 'name', None)
