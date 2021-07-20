@@ -80,7 +80,7 @@ Command
 ------------
 
 -  MySQL
--  Postgres
+-  PostgreSQL
 -  Microsoft SQL Server
 
 .. |Build| image:: https://travis-ci.org/starryrbs/django-comment-migrate.svg?branch=master
