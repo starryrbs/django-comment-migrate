@@ -15,7 +15,7 @@ def get_migration_class_from_engine(engine):
     return import_string(path)
 
 
-def migrate_app_models_help_text_to_database(app_models, using):
+def migrate_app_models_comment_to_database(app_models, using):
     engine = settings.DATABASES[using]['ENGINE']
     try:
         migration_class = get_migration_class_from_engine(engine)

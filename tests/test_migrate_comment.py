@@ -3,7 +3,7 @@ import io
 from django.apps.registry import Apps
 from django.conf import settings
 from django.core import management
-from django.test import TransactionTestCase, TestCase
+from django.test import TransactionTestCase, TestCase, override_settings
 from django.db import connections, migrations, models
 from django.utils.module_loading import import_string
 
@@ -104,6 +104,15 @@ class TestDjangoCommentMigration(TestCase):
         ).comments_sql()
         target_sql = engine_sql_mapping[engine]
         self.assertEqual(sql, target_sql)
+
+    @override_settings(DCM_COMMENT_KEY="verbose_name")
+    def test_custom_comment_key(self):
+        engine = settings.DATABASES["default"]["ENGINE"]
+        migration_class = get_migration_class_from_engine(engine)
+        sql = migration_class(
+            model=CommentModel, connection=connections["default"]
+        ).comments_sql()
+        self.assertIn("verbose name is aaa", str(sql))
 
 
 class TestCommand(TestCase):
