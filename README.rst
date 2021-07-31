@@ -59,9 +59,9 @@ Now check the database table, comments have been generated.
 Custom comment field
 --------------------
 
-In settings.py
+In settings.py::
 
-DCM_COMMENT_KEY='verbose_name'
+    DCM_COMMENT_KEY='verbose_name'
 
 Command
 -------

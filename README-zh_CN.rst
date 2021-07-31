@@ -59,10 +59,9 @@ Django Comment Migrate
 自定义注释的字段
 --------------------
 
-在 settings.py
+在 settings.py::
 
-DCM_COMMENT_KEY='verbose_name'
-
+    DCM_COMMENT_KEY='verbose_name'
 
 Command
 -------
