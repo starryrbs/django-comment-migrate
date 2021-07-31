@@ -11,7 +11,7 @@ USE_TZ = True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "k7n0r44#%6oyhawmz$o&mug!y3@25%u&+rg+4^iu0_tekg4jv3"
 
-test_db_engine = os.environ.get('TEST_DB_ENGINE', 'mysql')
+test_db_engine = os.environ.get('TEST_DB_ENGINE', 'mssql')
 
 test_db_engine_to_databases_mapping = {
     'mysql': {

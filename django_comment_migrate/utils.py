@@ -2,11 +2,12 @@ from django.db import router, DEFAULT_DB_ALIAS
 from django.db.migrations import Migration
 from django.db.models import Field
 
+from django_comment_migrate.config import dcm_config
+
 
 def get_field_comment(field: Field):
-    from django_comment_migrate.config import COMMENT_KEY
 
-    value = getattr(field, COMMENT_KEY)
+    value = getattr(field, dcm_config.DCM_COMMENT_KEY)
     if value is not None:
         return str(value)
 

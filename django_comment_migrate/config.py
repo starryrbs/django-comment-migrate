@@ -1,4 +1,12 @@
 from django.conf import settings
 
 
-COMMENT_KEY = getattr(settings, "DCM_COMMENT_KEY", "help_text")
+class DCMConfig:
+    defaults = {"DCM_COMMENT_KEY": "help_text"}
+
+    def __getattr__(self, name):
+        if name in self.defaults:
+            return getattr(settings, name, self.defaults[name])
+
+
+dcm_config = DCMConfig()
