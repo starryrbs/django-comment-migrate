@@ -10,7 +10,7 @@ Django Comment Migrate
 特性
 ----
 
--  自动化迁移model的字段的help\_text到注释
+-  自动化迁移model的字段的help\_text到注释【支持自定义】
 -  提供一个命令去迁移指定的app的注释
 
 例子
@@ -55,6 +55,13 @@ Django Comment Migrate
     python manage.py migrate
 
 现在检查数据库的table，注释已经迁移了。
+
+自定义注释的字段
+--------------------
+
+在 settings.py::
+
+    DCM_COMMENT_KEY='verbose_name'
 
 Command
 -------

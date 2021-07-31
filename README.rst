@@ -10,7 +10,7 @@ English \| `简体中文 <./README-zh_CN.rst>`__
 Feature
 -------
 
--  Automatic migration model help\_text to comment
+-  Automatic migration model help\_text to comment [Support customization]
 -  Provide a command to migrate the comment of the specified app
 
 Examples
@@ -55,6 +55,13 @@ Examples
     python manage.py migrate
 
 Now check the database table, comments have been generated.
+
+Custom comment field
+--------------------
+
+In settings.py::
+
+    DCM_COMMENT_KEY='verbose_name'
 
 Command
 -------
