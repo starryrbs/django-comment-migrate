@@ -57,6 +57,10 @@ class TestDjangoCommentMigration(TestCase):
                 ),
                 ["{'A', 'B'}"],
             ),
+            (
+                sql.SQL("COMMENT ON TABLE {} is %s;").format(sql.Identifier("user")),
+                ["comment model"],
+            ),
         ]
         mssql_sql = [
             (
@@ -77,6 +81,12 @@ class TestDjangoCommentMigration(TestCase):
                 "@level1type = N'TABLE',@level1name = %s, @level2type = N'COLUMN',@level2name = %s",
                 ("{'A', 'B'}", "user", "json_help_text"),
             ),
+            (
+                "EXEC sys.sp_addextendedproperty @name = N'MS_Description',"
+                "@value = %s, @level0type = N'SCHEMA',@level0name = N'dbo', "
+                "@level1type = N'TABLE',@level1name = %s",
+                ("comment model", "user"),
+            ),
         ]
         engine_sql_mapping = {
             "django.db.backends.mysql": [
@@ -92,7 +102,8 @@ class TestDjangoCommentMigration(TestCase):
                     "varchar(40) NOT NULL "
                     "COMMENT %s",
                     ["test default", "this is help text", "{'A', 'B'}"],
-                )
+                ),
+                ("ALTER TABLE user COMMENT %s", ["comment model"]),
             ],
             "django.db.backends.postgresql_psycopg2": postgres_comments_sql,
             "django.db.backends.postgresql": postgres_comments_sql,
@@ -105,7 +116,7 @@ class TestDjangoCommentMigration(TestCase):
         target_sql = engine_sql_mapping[engine]
         self.assertEqual(sql, target_sql)
 
-    @override_settings(DCM_COMMENT_KEY="verbose_name")
+    @override_settings(DCM_COMMENT_KEY="verbose_name", DCM_TABLE_COMMENT_KEY="verbose_name_plural")
     def test_custom_comment_key(self):
         engine = settings.DATABASES["default"]["ENGINE"]
         migration_class = get_migration_class_from_engine(engine)
@@ -113,6 +124,7 @@ class TestDjangoCommentMigration(TestCase):
             model=CommentModel, connection=connections["default"]
         ).comments_sql()
         self.assertIn("verbose name is aaa", str(sql))
+        self.assertIn("测试自定义表注释key", str(sql))
 
 
 class TestCommand(TestCase):

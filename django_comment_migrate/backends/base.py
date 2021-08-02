@@ -15,6 +15,10 @@ class BaseCommentMigration(metaclass=ABCMeta):
         if self.collect_sql:
             self.collected_sql = []
 
+    @property
+    def db_table(self):
+        return self.model._meta.db_table
+
     def comments_sql(self) -> List[Tuple[AnyStr, List[AnyStr]]]:
         pass
 

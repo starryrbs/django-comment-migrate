@@ -11,6 +11,7 @@ Django Comment Migrate
 ----
 
 -  自动化迁移model的字段的help\_text到注释【支持自定义】
+-  自动化迁移model的verbose_name到表注释【支持自定义】
 -  提供一个命令去迁移指定的app的注释
 
 例子
@@ -48,6 +49,7 @@ Django Comment Migrate
            class Meta:
                app_label = 'tests'
                db_table = 'comment_model'
+               verbose_name = '这是表注释'
 
 4. 执行数据库迁移::
 
@@ -62,6 +64,7 @@ Django Comment Migrate
 在 settings.py::
 
     DCM_COMMENT_KEY='verbose_name'
+    DCM_TABLE_COMMENT_KEY='verbose_name'
 
 Command
 -------
