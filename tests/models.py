@@ -13,6 +13,7 @@ class CommentModel(models.Model):
     class Meta:
         app_label = "tests"
         db_table = "user"
+        verbose_name_plural = "测试自定义表注释key"
 
 
 class AnotherUserModel(auth_models.AbstractBaseUser):

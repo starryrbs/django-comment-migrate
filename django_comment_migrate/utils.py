@@ -12,6 +12,12 @@ def get_field_comment(field: Field):
         return str(value)
 
 
+def get_table_comment(model):
+    value = getattr(model._meta, dcm_config.DCM_TABLE_COMMENT_KEY)
+    if value is not None:
+        return str(value)
+
+
 def get_migrations_app_models(
     migrations: [Migration], apps, using=DEFAULT_DB_ALIAS
 ) -> set:
