@@ -11,6 +11,7 @@ Feature
 -------
 
 -  Automatic migration model help\_text to comment [Support customization]
+-  Automatically migrate the verbose_name of the model to the table comment [Support customization]
 -  Provide a command to migrate the comment of the specified app
 
 Examples
@@ -48,6 +49,7 @@ Examples
            class Meta:
                app_label = 'tests'
                db_table = 'comment_model'
+               verbose_name = 'It is Comment Table'
 
 4. execute database migrate::
 
@@ -62,6 +64,7 @@ Custom comment field
 In settings.py::
 
     DCM_COMMENT_KEY='verbose_name'
+    DCM_TABLE_COMMENT_KEY='verbose_name'
 
 Command
 -------
