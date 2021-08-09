@@ -58,13 +58,16 @@ Examples
 
 Now check the database table, comments have been generated.
 
-Custom comment field
---------------------
+Custom config
+---------------
 
 In settings.py::
 
     DCM_COMMENT_KEY='verbose_name'
     DCM_TABLE_COMMENT_KEY='verbose_name'
+    DCM_BACKEND={
+            "new-engine": "engine.path"
+    }
 
 Command
 -------
