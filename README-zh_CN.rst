@@ -58,13 +58,16 @@ Django Comment Migrate
 
 现在检查数据库的table，注释已经迁移了。
 
-自定义注释的字段
+自定义配置
 --------------------
 
 在 settings.py::
 
     DCM_COMMENT_KEY='verbose_name'
     DCM_TABLE_COMMENT_KEY='verbose_name'
+    DCM_BACKEND={
+            "new-engine": "engine.path"
+    }
 
 Command
 -------

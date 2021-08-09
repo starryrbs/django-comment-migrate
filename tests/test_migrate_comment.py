@@ -116,7 +116,9 @@ class TestDjangoCommentMigration(TestCase):
         target_sql = engine_sql_mapping[engine]
         self.assertEqual(sql, target_sql)
 
-    @override_settings(DCM_COMMENT_KEY="verbose_name", DCM_TABLE_COMMENT_KEY="verbose_name_plural")
+    @override_settings(
+        DCM_COMMENT_KEY="verbose_name", DCM_TABLE_COMMENT_KEY="verbose_name_plural"
+    )
     def test_custom_comment_key(self):
         engine = settings.DATABASES["default"]["ENGINE"]
         migration_class = get_migration_class_from_engine(engine)
@@ -125,6 +127,18 @@ class TestDjangoCommentMigration(TestCase):
         ).comments_sql()
         self.assertIn("verbose name is aaa", str(sql))
         self.assertIn("测试自定义表注释key", str(sql))
+
+    @override_settings(
+        DCM_BACKEND={
+            "new-engine": "django_comment_migrate.backends.mssql.CommentMigration"
+        }
+    )
+    def test_custom_backend(self):
+        migration_class = get_migration_class_from_engine("new-engine")
+        self.assertEqual(
+            migration_class,
+            import_string("django_comment_migrate.backends.mssql.CommentMigration"),
+        )
 
 
 class TestCommand(TestCase):
