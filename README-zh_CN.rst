@@ -65,7 +65,7 @@ Django Comment Migrate
 
     DCM_COMMENT_KEY='verbose_name' #注释字段，默认是help_text
     DCM_TABLE_COMMENT_KEY='verbose_name' # 表注释字段
-    DCM_BACKEND={ # 如果自定义了数据的engine，可以使用改配置
+    DCM_BACKEND={ # 如果自定义了数据的engine，可以使用该配置
             "my-engine": "django_comment_migrate.backends.mysql.CommentMigration"
     }
 
