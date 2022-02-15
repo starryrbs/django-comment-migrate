@@ -51,7 +51,15 @@ Django Comment Migrate
                db_table = 'comment_model'
                verbose_name = '这是表注释'
 
-4. 执行数据库迁移::
+4. 添加app
+
+    project/app/settings.py
+
+   .. code:: python
+
+       DCM_COMMENT_APP=["app"]
+
+5. 执行数据库迁移::
 
     python manage.py makemigrations
     python manage.py migrate

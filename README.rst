@@ -51,7 +51,15 @@ Examples
                db_table = 'comment_model'
                verbose_name = 'It is Comment Table'
 
-4. execute database migrate::
+4. add app
+
+    project/app/settings.py
+
+   .. code:: python
+
+       DCM_COMMENT_APP=["app"]
+
+5. execute database migrate::
 
     python manage.py makemigrations
     python manage.py migrate
