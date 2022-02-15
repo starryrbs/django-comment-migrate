@@ -76,6 +76,7 @@ Django Comment Migrate
     DCM_BACKEND={ # 如果自定义了数据的engine，可以使用该配置
             "my-engine": "django_comment_migrate.backends.mysql.CommentMigration"
     }
+    DCM_COMMENT_APP=["app"]   # 如果不配置则默认生成所有表的注释
 
 
 Command

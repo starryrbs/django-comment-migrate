@@ -76,6 +76,7 @@ In settings.py::
     DCM_BACKEND={
             "new-engine": "engine.path"
     }
+    DCM_COMMENT_APP=["app"]
 
 Command
 -------
