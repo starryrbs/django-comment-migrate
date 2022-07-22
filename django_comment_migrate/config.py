@@ -6,6 +6,7 @@ class DCMConfig:
         "DCM_COMMENT_KEY": "help_text",
         "DCM_TABLE_COMMENT_KEY": "verbose_name",
         "DCM_BACKEND": None,
+        "DCM_COMMENT_APP": []
     }
 
     def __getattr__(self, name):
