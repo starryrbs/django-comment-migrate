@@ -22,11 +22,13 @@ def get_migrations_app_models(
     migrations: [Migration], apps, using=DEFAULT_DB_ALIAS
 ) -> set:
     models = set()
+    from django_comment_migrate.config import dcm_config  # noqa
+    dcm_comment_app = dcm_config.DCM_COMMENT_APP
     for migration in migrations:
         if not isinstance(migration, Migration):
             continue
         app_label = migration.app_label
-        if not router.allow_migrate(using, app_label):
+        if not router.allow_migrate(using, app_label) or app_label not in dcm_comment_app:
             continue
         operations = getattr(migration, "operations", [])
         for operation in operations:
@@ -35,6 +37,9 @@ def get_migrations_app_models(
             )
             if model_name is None:
                 continue
-            model = apps.get_model(app_label, model_name=model_name)
+            try:
+                model = apps.get_model(app_label, model_name=model_name)
+            except LookupError:
+                continue
             models.add(model)
     return models
