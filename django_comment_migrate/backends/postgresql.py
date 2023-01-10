@@ -26,7 +26,7 @@ class CommentMigration(BaseCommentMigration):
 
     def _get_fields_comments_sql(self):
         comments_sql = []
-        for field in self.model._meta.fields:
+        for field in self.model._meta.local_fields:
             comment = get_field_comment(field)
             if comment:
                 comment_sql = self.comment_sql.format(
