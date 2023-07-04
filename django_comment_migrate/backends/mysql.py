@@ -4,14 +4,14 @@ from django_comment_migrate.utils import get_field_comment, get_table_comment
 
 class CommentMigration(BaseCommentMigration):
     atomic = False
-    sql_alter_column = "ALTER TABLE %(table)s %(changes)s"
+    sql_alter_column = "ALTER TABLE `%(table)s` %(changes)s"
     sql_alter_column_comment_null = (
         "MODIFY COLUMN %(column)s %(type)s NULL" " COMMENT %(comment)s"
     )
     sql_alter_column_comment_not_null = (
         "MODIFY COLUMN %(column)s %(type)s " "NOT NULL COMMENT %(comment)s"
     )
-    sql_alter_table_comment = "ALTER TABLE %(table)s COMMENT %(comment)s"
+    sql_alter_table_comment = "ALTER TABLE `%(table)s` COMMENT %(comment)s"
 
     def comments_sql(self):
         changes = []
